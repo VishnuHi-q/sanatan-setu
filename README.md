@@ -94,6 +94,3 @@ Type Safety: Full TypeScript implementation across the codebase to ensure robust
 
 📄 License
 This project is licensed under the MIT License — see the LICENSE file for details.
-
-
-After pasting this, just save the file (`Ctrl + S`), commit it, and sync it to GitHub!
