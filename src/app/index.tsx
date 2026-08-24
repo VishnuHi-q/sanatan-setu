@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, Animated, SafeAreaView, Easing, Platform } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { View, Text, StyleSheet, Animated, SafeAreaView, Easing, Platform, Dimensions } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
@@ -69,18 +69,25 @@ export default function SplashScreen() {
   const scaleAnim = useRef(new Animated.Value(0.8)).current;
   const router = useRouter();
 
-  // 🚀 THE FIX: We use percentages now! 
-  // This guarantees they spread across 100% of the screen instantly.
-  const backgroundOms = Array.from({ length: 22 }).map((_, i) => ({
-    id: i,
-    delay: Math.random() * 4000,
-    duration: 6000 + Math.random() * 4000,
-    startX: `${Math.random() * 90}%`, // Random position from 0% to 90% of the screen width
-    startY: `${Math.random() * 90}%`, // Random position from 0% to 90% of the screen height
-    baseFontSize: 18 + Math.random() * 22,
-  }));
+  // We use State here so the Oms are generated AFTER the browser screen size is known
+  const [backgroundOms, setBackgroundOms] = useState<any[]>([]);
 
   useEffect(() => {
+    // 🚀 THE FIX: Get the true window width after the component mounts in the browser
+    const { width, height } = Dimensions.get('window');
+
+    const generatedOms = Array.from({ length: 30 }).map((_, i) => ({
+      id: i,
+      delay: Math.random() * 4000,
+      duration: 6000 + Math.random() * 4000,
+      startX: Math.random() * (width - 50), // Spreads across the true screen width
+      startY: Math.random() * (height - 50), // Spreads across the true screen height
+      baseFontSize: 18 + Math.random() * 22,
+    }));
+
+    setBackgroundOms(generatedOms);
+
+    // Start Main Logo Animation
     Animated.parallel([
       Animated.timing(fadeAnim, { toValue: 1, duration: 1500, useNativeDriver: USE_NATIVE_DRIVER }),
       Animated.spring(scaleAnim, { toValue: 1, friction: 4, tension: 15, useNativeDriver: USE_NATIVE_DRIVER }),
