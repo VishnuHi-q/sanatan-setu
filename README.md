@@ -1,56 +1,99 @@
-# Welcome to your Expo app 👋
+Markdown
+# 🕉️ Sanatan Setu (सनातन सेतु)
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+> **Your Spiritual Bridge** — Connecting devotees with verified Vedic rituals, sacred ceremonies, and authenticated priests.
 
-## Get started
+---
 
-1. Install dependencies
+## 📌 Project Overview
 
+**Sanatan Setu** is a cross-platform mobile application designed to bridge traditional Vedic practices with modern digital convenience. The platform enables devotees to book verified priests, organize rituals and pujas at home, and access authentic spiritual services with transparency and trust.
+
+---
+
+## ✨ Key Features
+
+* **3D Immersive Design System:** Rich, sacred visual aesthetics featuring dynamic depth, blur layers, and gold-accented styling.
+* **Secure Phone Authentication:** Passwordless mobile login via Supabase OTP verification.
+* **Cross-Platform Compatibility:** Optimized for both Android and iOS with native performance.
+* **Responsive Architecture:** Scalable layout adapting across mobile screens and tablet formats.
+* **Bilingual Support (Roadmap):** Designed for seamless switching between English and Hindi.
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technology |
+| :--- | :--- |
+| **Framework** | [React Native](https://reactnative.dev/) with [Expo](https://expo.dev/) (Router v4) |
+| **Language** | [TypeScript](https://www.typescriptlang.org/) |
+| **Styling & UI** | React Native StyleSheet, BlurView, Vector Icons |
+| **Backend & Auth** | [Supabase](https://supabase.com/) (PostgreSQL & OTP Authentication) |
+| **State & Storage** | React Native Async Storage |
+
+---
+
+## 🚀 Getting Started
+
+Follow these instructions to run the project locally on your machine.
+
+### Prerequisites
+
+* [Node.js](https://nodejs.org/) (v18 or higher recommended)
+* [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/)
+* [Expo Go](https://expo.dev/go) app on your mobile device (iOS/Android)
+
+### Installation
+
+1. **Clone the repository:**
    ```bash
-   npm install
-   ```
+   git clone [https://github.com/VishnuHi-q/sanatan-setu.git](https://github.com/VishnuHi-q/sanatan-setu.git)
+   cd sanatan-setu
+Install dependencies:
 
-2. Start the app
+Bash
+npm install
+Configure Environment Variables:
+Create a .env file in the root directory:
 
-   ```bash
-   npx expo start
-   ```
+Code snippet
+EXPO_PUBLIC_SUPABASE_URL=your_supabase_project_url
+EXPO_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+Start the development server:
 
-In the output, you'll find options to open the app in a
+Bash
+npx expo start
+Run the app:
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+Scan the QR code using the Expo Go app on Android or the default Camera app on iOS.
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+Press w in the terminal to open the web preview.
 
-## Get a fresh project
+📂 Project Structure
+Plaintext
+sanatan-setu/
+├── src/
+│   ├── app/
+│   │   ├── (auth)/          # Authentication flow (Login, OTP verification)
+│   │   ├── _layout.tsx      # Root application layout & routing
+│   │   └── index.tsx        # Entry splash screen
+│   ├── components/          # Reusable UI components
+│   ├── constants/           # Global styles, colors, and theme tokens
+│   ├── hooks/               # Custom React hooks
+│   └── lib/
+│       └── supabase.ts      # Supabase client configuration
+├── assets/                  # Images, fonts, and icons
+├── .env                     # Environment variables (git-ignored)
+└── package.json             # Project dependencies and scripts
+🔒 Security & Best Practices
+Environment Isolation: All sensitive credentials and API endpoints are managed via environment variables and excluded from version control.
 
-When you're ready, run:
+Row-Level Security (RLS): Supabase database tables are secured using fine-grained access policies.
 
-```bash
-npm run reset-project
-```
+Type Safety: Full TypeScript implementation across the codebase to ensure robust development.
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+📄 License
+This project is licensed under the MIT License — see the LICENSE file for details.
 
-### Other setup steps
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+After pasting this, just save the file (`Ctrl + S`), commit it, and sync it to GitHub!
