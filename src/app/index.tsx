@@ -1,10 +1,13 @@
 import React, { useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, Animated, SafeAreaView, Dimensions, Easing } from 'react-native';
+import { View, Text, StyleSheet, Animated, SafeAreaView, Dimensions, Easing, Platform } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
 
 const { width, height } = Dimensions.get('window');
+
+// 🚀 THE FIX: Automatically disable native driver on the web, but keep it on for iOS/Android
+const USE_NATIVE_DRIVER = Platform.OS !== 'web';
 
 // Smooth, graceful 3D Depth Zoom-Out Animation
 const SmoothZoomingOm = ({ delay, startX, startY, duration, baseFontSize }: any) => {
@@ -22,20 +25,20 @@ const SmoothZoomingOm = ({ delay, startX, startY, duration, baseFontSize }: any)
           Animated.timing(scale, {
             toValue: 3.2,
             duration: duration,
-            easing: Easing.out(Easing.quad), // Makes the motion feel natural and buttery smooth
-            useNativeDriver: true,
+            easing: Easing.out(Easing.quad), 
+            useNativeDriver: USE_NATIVE_DRIVER, // Updated
           }),
           // Gentle fade-in and fade-out envelope
           Animated.sequence([
             Animated.timing(opacity, {
-              toValue: 0.20, // Subtle, non-intrusive background opacity
+              toValue: 0.20, 
               duration: duration * 0.3,
-              useNativeDriver: true,
+              useNativeDriver: USE_NATIVE_DRIVER, // Updated
             }),
             Animated.timing(opacity, {
               toValue: 0,
               duration: duration * 0.7,
-              useNativeDriver: true,
+              useNativeDriver: USE_NATIVE_DRIVER, // Updated
             }),
           ]),
         ]).start(({ finished }) => {
@@ -83,8 +86,8 @@ export default function SplashScreen() {
 
   useEffect(() => {
     Animated.parallel([
-      Animated.timing(fadeAnim, { toValue: 1, duration: 1500, useNativeDriver: true }),
-      Animated.spring(scaleAnim, { toValue: 1, friction: 4, tension: 15, useNativeDriver: true }),
+      Animated.timing(fadeAnim, { toValue: 1, duration: 1500, useNativeDriver: USE_NATIVE_DRIVER }), // Updated
+      Animated.spring(scaleAnim, { toValue: 1, friction: 4, tension: 15, useNativeDriver: USE_NATIVE_DRIVER }), // Updated
     ]).start();
 
     // Auto-transition to login after 5 seconds
