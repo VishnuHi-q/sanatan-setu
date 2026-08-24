@@ -1,10 +1,10 @@
-import React, { useEffect, useRef, useMemo } from 'react';
-import { View, Text, StyleSheet, Animated, SafeAreaView, useWindowDimensions, Easing, Platform } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { View, Text, StyleSheet, Animated, SafeAreaView, Easing, Platform } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
 
-// Disable native driver on Web (where it's unsupported), keep it on for iOS/Android
+// Disable native driver on Web, keep it on for iOS/Android
 const USE_NATIVE_DRIVER = Platform.OS !== 'web';
 
 // Smooth, graceful 3D Depth Zoom-Out Animation
@@ -23,7 +23,7 @@ const SmoothZoomingOm = ({ delay, startX, startY, duration, baseFontSize }: any)
         }),
         Animated.sequence([
           Animated.timing(opacity, {
-            toValue: 0.35, // Clear, subtle visibility
+            toValue: 0.35, 
             duration: duration * 0.3,
             useNativeDriver: USE_NATIVE_DRIVER,
           }),
@@ -65,25 +65,20 @@ const SmoothZoomingOm = ({ delay, startX, startY, duration, baseFontSize }: any)
 };
 
 export default function SplashScreen() {
-  const { width, height } = useWindowDimensions();
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const scaleAnim = useRef(new Animated.Value(0.8)).current;
   const router = useRouter();
 
-  // Generate randomized positions dynamically based on actual screen size
-  const backgroundOms = useMemo(() => {
-    const safeWidth = width > 0 ? width : 360;
-    const safeHeight = height > 0 ? height : 640;
-
-    return Array.from({ length: 22 }).map((_, i) => ({
-      id: i,
-      delay: Math.random() * 4000,
-      duration: 6000 + Math.random() * 4000,
-      startX: Math.random() * Math.max(safeWidth - 60, 20),
-      startY: Math.random() * Math.max(safeHeight - 60, 20),
-      baseFontSize: 18 + Math.random() * 22,
-    }));
-  }, [width, height]);
+  // 🚀 THE FIX: We use percentages now! 
+  // This guarantees they spread across 100% of the screen instantly.
+  const backgroundOms = Array.from({ length: 22 }).map((_, i) => ({
+    id: i,
+    delay: Math.random() * 4000,
+    duration: 6000 + Math.random() * 4000,
+    startX: `${Math.random() * 90}%`, // Random position from 0% to 90% of the screen width
+    startY: `${Math.random() * 90}%`, // Random position from 0% to 90% of the screen height
+    baseFontSize: 18 + Math.random() * 22,
+  }));
 
   useEffect(() => {
     Animated.parallel([
