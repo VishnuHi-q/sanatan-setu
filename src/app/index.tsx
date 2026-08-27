@@ -4,10 +4,8 @@ import { StatusBar } from 'expo-status-bar';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
 
-// Disable native driver on Web, keep it on for iOS/Android
 const USE_NATIVE_DRIVER = Platform.OS !== 'web';
 
-// Smooth, graceful 3D Depth Zoom-Out Animation
 const SmoothZoomingOm = ({ delay, startX, startY, duration, baseFontSize }: any) => {
   const scale = useRef(new Animated.Value(0.2)).current;
   const opacity = useRef(new Animated.Value(0)).current;
@@ -23,7 +21,7 @@ const SmoothZoomingOm = ({ delay, startX, startY, duration, baseFontSize }: any)
         }),
         Animated.sequence([
           Animated.timing(opacity, {
-            toValue: 0.35, 
+            toValue: 0.35,
             duration: duration * 0.3,
             useNativeDriver: USE_NATIVE_DRIVER,
           }),
@@ -69,31 +67,29 @@ export default function SplashScreen() {
   const scaleAnim = useRef(new Animated.Value(0.8)).current;
   const router = useRouter();
 
-  // We use State here so the Oms are generated AFTER the browser screen size is known
   const [backgroundOms, setBackgroundOms] = useState<any[]>([]);
 
   useEffect(() => {
-    // 🚀 THE FIX: Get the true window width after the component mounts in the browser
-    const { width, height } = Dimensions.get('window');
+    // Dynamically grab width/height safely across mobile and desktop views
+    const width = Dimensions.get('window').width || 400;
+    const height = Dimensions.get('window').height || 800;
 
-    const generatedOms = Array.from({ length: 30 }).map((_, i) => ({
+    const generatedOms = Array.from({ length: 25 }).map((_, i) => ({
       id: i,
       delay: Math.random() * 4000,
       duration: 6000 + Math.random() * 4000,
-      startX: Math.random() * (width - 50), // Spreads across the true screen width
-      startY: Math.random() * (height - 50), // Spreads across the true screen height
+      startX: `${Math.random() * 95}%`, // Uses safe percentage bounds so it never clips
+      startY: `${Math.random() * 95}%`,
       baseFontSize: 18 + Math.random() * 22,
     }));
 
     setBackgroundOms(generatedOms);
 
-    // Start Main Logo Animation
     Animated.parallel([
       Animated.timing(fadeAnim, { toValue: 1, duration: 1500, useNativeDriver: USE_NATIVE_DRIVER }),
       Animated.spring(scaleAnim, { toValue: 1, friction: 4, tension: 15, useNativeDriver: USE_NATIVE_DRIVER }),
     ]).start();
 
-    // Auto-transition to login after 5 seconds
     const timer = setTimeout(() => {
       router.replace('/(auth)/login');
     }, 5000);
@@ -151,8 +147,15 @@ export default function SplashScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, width: '100%', height: '100%', overflow: 'hidden', position: 'relative' },
-  safeArea: { flex: 1, alignItems: 'center', justifyContent: 'center' },
+  container: { 
+    flex: 1, 
+    width: '100%', 
+    height: '100%', 
+    minHeight: '100vh' as any, // Ensures full screen coverage on web/desktop views
+    overflow: 'hidden', 
+    position: 'relative' 
+  },
+  safeArea: { flex: 1, width: '100%', alignItems: 'center', justifyContent: 'center' },
   zoomingOm: {
     position: 'absolute',
     color: '#FFD700',
@@ -160,19 +163,19 @@ const styles = StyleSheet.create({
     zIndex: 1,
     userSelect: 'none',
   } as any,
-  content: { alignItems: 'center', justifyContent: 'center', width: '100%', zIndex: 10 },
+  content: { alignItems: 'center', justifyContent: 'center', width: '100%', maxWidth: 600, paddingHorizontal: 20, zIndex: 10 },
   logoRing: { width: 150, height: 150, borderRadius: 75, borderWidth: 1.5, borderColor: 'rgba(255, 215, 0, 0.2)', alignItems: 'center', justifyContent: 'center', marginBottom: 30, backgroundColor: 'rgba(255,255,255,0.02)' },
   innerRing: { width: 110, height: 110, borderRadius: 55, borderWidth: 1.5, borderColor: 'rgba(255, 215, 0, 0.6)', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(255, 255, 255, 0.08)' },
   centerWrapper: { position: 'relative', alignItems: 'center', justifyContent: 'center' },
   mainOmText: { fontSize: 70, color: '#FFD700' },
   omShadow1: { position: 'absolute', color: '#B8860B', top: 3, left: 2, zIndex: -1 },
   omShadow2: { position: 'absolute', color: 'rgba(0,0,0,0.6)', top: 7, left: 4, zIndex: -2, textShadowRadius: 10 },
-  title: { fontSize: 44, color: '#FFFFFF', fontWeight: '900', letterSpacing: 2 },
+  title: { fontSize: 44, color: '#FFFFFF', fontWeight: '900', letterSpacing: 2, textAlign: 'center' },
   titleShadow1: { position: 'absolute', color: '#D4AF37', top: 3, left: 2, zIndex: -1 },
   titleShadow2: { position: 'absolute', color: 'rgba(0,0,0,0.5)', top: 6, left: 4, zIndex: -2, textShadowRadius: 10 },
-  hindiTitle: { fontSize: 24, color: '#FFE8A1', marginTop: 12, letterSpacing: 4, fontWeight: '600', textShadowColor: 'rgba(0,0,0,0.4)', textShadowOffset: { width: 0, height: 2 }, textShadowRadius: 4 },
+  hindiTitle: { fontSize: 24, color: '#FFE8A1', marginTop: 12, letterSpacing: 4, fontWeight: '600', textShadowColor: 'rgba(0,0,0,0.4)', textShadowOffset: { width: 0, height: 2 }, textShadowRadius: 4, textAlign: 'center' },
   dividerContainer: { flexDirection: 'row', alignItems: 'center', marginVertical: 30 },
   line: { height: 1, width: 80, backgroundColor: 'rgba(255, 215, 0, 0.4)' },
   star: { color: '#FFD700', marginHorizontal: 15, fontSize: 18 },
-  tagline: { color: 'rgba(255, 255, 255, 0.95)', fontSize: 15, lineHeight: 24, fontWeight: '500', letterSpacing: 0.5, textShadowColor: 'rgba(0,0,0,0.5)', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 3 }
+  tagline: { color: 'rgba(255, 255, 255, 0.95)', fontSize: 15, lineHeight: 24, fontWeight: '500', letterSpacing: 0.5, textShadowColor: 'rgba(0,0,0,0.5)', textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 3, textAlign: 'center' }
 });
